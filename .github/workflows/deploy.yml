@@ -27,10 +27,12 @@ jobs:
         run: yarn build; yarn copy; yarn deploy
         env:
           DO_NOT_USE_ENV_FILE: true
-          PORT: 3000
+          HTTPS: true
+          HTTPS_PRIVKEY: ${{ secrets.pathPrivkey }}
+          HTTPS_CHAIN: ${{ secrets.pathChain }}
+          HTTPS_CERT: ${{ secrets.pathCert }}
           DB_HOST: ${{ secrets.databaseHost }}
           DB_NAME: ${{ secrets.databaseName }}
           DB_USER_ID: ${{ secrets.databaseAuthID }}
           DB_USER_PW: ${{ secrets.databaseAuthPW }}
-          JWT_TOKEN_SECRETKEY: ${{ secrets.jwtTokenSecret }}
           LOGIN_BASIC_AUTH_KEY: ${{ secrets.loginAuthKey }}

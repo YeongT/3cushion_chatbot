@@ -1,10 +1,26 @@
+import fs from 'fs';
 import http from 'http';
+import https from 'https';
 import { app } from './app';
 
 const port = process.env.PORT || '3000';
+let server: http.Server | https.Server;
+
+if (process.env.HTTPS === 'true') {
+  if (!process.env.HTTPS_PRIVKEY)
+    throw new Error('[HTTPS] NO PRIVATE KEY FILE PATH FOR HTTPS EXPRESS SERVER');
+  if (!process.env.HTTPS_CHAIN) throw new Error('[HTTPS] NO CHAIN FILE PATH FOR HTTPS EXPRESS SERVER');
+  if (!process.env.HTTPS_CERT) throw new Error('[HTTPS] NO CERT FILE PATH FOR HTTPS EXPRESS SERVER');
+
+  const credentials: https.ServerOptions = {
+    key: fs.readFileSync(__dirname + process.env.HTTPS_PRIVKEY),
+    cert: fs.readFileSync(__dirname + process.env.HTTPS_CERT),
+    ca: fs.readFileSync(__dirname + process.env.HTTPS_CHAIN),
+  };
+  server = https.createServer(credentials, app);
+} else server = http.createServer(app);
 
 app.set('port', port);
-const server: http.Server = http.createServer(app);
 const onError = (error: { syscall: string; code: any }) => {
   if (error.syscall !== 'listen') throw error;
 
@@ -19,7 +35,9 @@ const onError = (error: { syscall: string; code: any }) => {
 };
 
 const onListening = () => {
-  console.log(`\n\nAPI Server is Running on ${port}`);
+  console.log(
+    `\n\n${process.env.HTTPS === 'true' ? '[HTTPS] Secured ' : '[HTTP] '}API Server is Running on ${port}`,
+  );
 };
 
 server.listen(port);

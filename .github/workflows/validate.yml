@@ -7,15 +7,6 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  PORT: 5000
-  DB_HOST: ${{ secrets.databaseHost }}
-  DB_NAME: ${{ secrets.databaseName }}
-  DB_USER_ID: ${{ secrets.databaseAuthID }}
-  DB_USER_PW: ${{ secrets.databaseAuthPW }}
-  JWT_SECRET: ${{ secrets.jwtTokenSecret }}
-  LOGIN_AUTH: ${{ secrets.loginAuthKey }}
-
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -33,11 +24,14 @@ jobs:
       - name: Deploy to Ubuntu
         run: yarn build; yarn copy; yarn deploy
         env:
-          DO_NOT_USE_ENV_FILE: true
-          PORT: 5000
-          DB_HOST: ${{ secrets.databaseHost }}
-          DB_NAME: ${{ secrets.databaseName }}
-          DB_USER_ID: ${{ secrets.databaseAuthID }}
-          DB_USER_PW: ${{ secrets.databaseAuthPW }}
-          JWT_TOKEN_SECRETKEY: ${{ secrets.jwtTokenSecret }}
-          LOGIN_BASIC_AUTH_KEY: ${{ secrets.loginAuthKey }}
+          env:
+            DO_NOT_USE_ENV_FILE: true
+            HTTPS: true
+            HTTPS_PRIVKEY: ${{ secrets.pathPrivkey }}
+            HTTPS_CHAIN: ${{ secrets.pathChain }}
+            HTTPS_CERT: ${{ secrets.pathCert }}
+            DB_HOST: ${{ secrets.databaseHost }}
+            DB_NAME: ${{ secrets.databaseName }}
+            DB_USER_ID: ${{ secrets.databaseAuthID }}
+            DB_USER_PW: ${{ secrets.databaseAuthPW }}
+            LOGIN_BASIC_AUTH_KEY: ${{ secrets.loginAuthKey }}
