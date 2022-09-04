@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  description: This is api docs for cau-3cushion
+  version: 1.0.0
+  title: cau-3cushion-chatbot
+  termsOfService: https://www.loadover.me/terms/
+  contact:
+    email: 3cushion@loadover.me
+tags:
+paths:
+servers:
+  - url: https://api.loadover.me/
+    description: Release Server
+  - url: http://localhost:5000/
+    description: Development Server
+components:
+  responses:
+    NotAuthorized:
+      description: >
+        Request denied because you are not authorized.
+        Please send request with authorization header.
+    LoginDenied:
+      description: user action denied because account closed.
+    FormatError:
+      description: data client provided doesn't satisfy format.
+    EmailFailed:
+      description: >
+        account generated but verification email wasn't sent.
+        Please resend verification email in application.
+    ServerError:
+      description: api server connection is unstable (cause of network status)
+    DefaultModel:
+      description: default response model
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/apiResult'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/apiResult'
+  securitySchemes:
+    JWTAuth:
+      type: apiKey
+      name: authorization
+      in: header
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:

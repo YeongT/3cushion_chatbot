@@ -1,0 +1,11 @@
+.statusError {
+    font-size: 21px;
+    font-weight: bold;
+    color: red;
+}
+
+.statusOkay {
+    font-size: 21px;
+    font-weight: bold;
+    color: green;
+}
