@@ -16,11 +16,17 @@ router.post('/', async (req: Request, res: Response) => {
 
   //# SAVE USER ACCOUNT ON DATABASE
   const createUser = new UserModel({
-    name: req.body.name,
-    phone: req.body.phone,
+    info: {
+      name: req.body.name,
+      depart: req.body.depart,
+      age: req.body.age,
+      phone: `0${req.body.phone}`,
+      dues: `${req.body.dues === 'O'}`,
+    },
     auth: {
+      type: req.body.type,
       studentID: req.body.id,
-      passCode: req.body.phone.substr(7, 11),
+      passCode: req.body.phone.toString().substring(6, 10),
     },
     game: {
       league: {
@@ -72,5 +78,6 @@ router.post('/', async (req: Request, res: Response) => {
   const userSaveResult = await createUser.save();
   if (!userSaveResult) return res.status(500).end('ERROR');
   res.status(200).end('SUCCESS');
+  console.log(`REGISTER SUCCESS ${req.body.name}`);
 });
 export default router;

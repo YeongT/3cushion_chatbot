@@ -36,3 +36,4 @@ jobs:
           DB_USER_ID: ${{ secrets.databaseAuthID }}
           DB_USER_PW: ${{ secrets.databaseAuthPW }}
           LOGIN_BASIC_AUTH_KEY: ${{ secrets.loginAuthKey }}
+          CLUBROOM_PASSCODE: ${{ secrets.clubRoomPassCode }}

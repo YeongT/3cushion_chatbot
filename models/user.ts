@@ -2,10 +2,16 @@ import { Model, model, Schema } from 'mongoose';
 
 interface UserObject {
   _id: Schema.Types.ObjectId;
-  name: string;
-  phone: string;
+  info: {
+    name: string;
+    depart: string;
+    age: number;
+    phone: string;
+    dues: boolean;
+  };
   auth: {
     kakaoTalk: string;
+    type: string;
     studentID: number;
     passCode: number;
   };
@@ -57,10 +63,19 @@ interface UserObject {
 
 const UserSchema: Schema = new Schema(
   {
-    name: String,
-    phone: String,
+    info: {
+      name: String,
+      depart: String,
+      age: Number,
+      phone: String,
+      dues: Boolean,
+    },
     auth: {
       kakaoTalk: String,
+      type: {
+        type: String,
+        enum: ['임원', '기존', '신규'],
+      },
       studentID: Number,
       passCode: Number,
     },

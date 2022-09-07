@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { DBError } from '../server/app';
 import loginAPI from './auth/login';
 import registerAPI from './auth/register';
+import clubRoomAPI from './info/clubroom';
 
 const router = Router();
 
@@ -39,4 +40,5 @@ router.get('/status', (req: Request, res: Response) => {
 
 router.use('/auth/login', loginAPI);
 router.use('/auth/register', registerAPI);
+router.use('/info/clubroom', clubRoomAPI);
 export default router;
