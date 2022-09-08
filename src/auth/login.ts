@@ -26,8 +26,8 @@ interface UserActionObject {
   name: string;
   clientExtra: null;
   params: {
-    studentID: number;
-    passCode: number;
+    studentID: string;
+    passCode: string;
   };
   id: string;
   detailParams: JSON;
@@ -47,12 +47,14 @@ router.post('/', async (req: Request, res: Response) => {
   if (userRequest === undefined || userAction === undefined) return loginRespond(res, 412, null);
 
   //# QUERY STUDENT INFORMATION
+  if (Number.isNaN(Number(userAction.params.studentID))) return loginRespond(res, 412, null);
   const _user: UserObject | null = await UserModel.findOne({
-    'auth.studentID': `${userAction.params.studentID}`,
+    'auth.studentID': Number(userAction.params.studentID),
   });
   if (_user === null) return loginRespond(res, 410, null);
-  if (_user.auth.passCode != userAction.params.passCode) return loginRespond(res, 409, null);
+  if (_user.auth.passCode.toString() !== userAction.params.passCode) return loginRespond(res, 409, null);
 
+  await UserModel.updateMany({ 'auth.kakaoTalk': userRequest.user.id }, { 'auth.kakaoTalk': undefined });
   const _result = await UserModel.updateOne(
     { 'auth.studentID': userAction.params.studentID, 'auth.passCode': userAction.params.passCode },
     { 'auth.kakaoTalk': userRequest.user.id },

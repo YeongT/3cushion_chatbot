@@ -41,7 +41,7 @@ const loginRespond = (res: Res, returnCode: number, user: UserObject | null): vo
       quickReplies: [],
     },
   };
-  if (returnCode !== 200 && user !== null) {
+  if (returnCode === 200 && user !== null) {
     if (!user.info.dues) {
       result.template.outputs.push({
         simpleText: {
@@ -49,14 +49,14 @@ const loginRespond = (res: Res, returnCode: number, user: UserObject | null): vo
         },
       });
     }
-    result.template.quickReplies.push({ label: '로그인 다시시도', action: 'message', messageText: '로그인' });
-  }
-  if (returnCode === 200)
     result.template.quickReplies.push({
       label: '동아리방 정보',
       action: 'message',
       messageText: '동아리방 정보',
     });
+  } else
+    result.template.quickReplies.push({ label: '로그인 다시시도', action: 'message', messageText: '로그인' });
+
   res.status(200).json(result);
 };
 

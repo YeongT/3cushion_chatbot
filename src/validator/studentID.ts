@@ -8,8 +8,7 @@ router.post('/', (req: Request, res: Response) => {
 
   try {
     if (req.body.value.origin.toString().length !== 8) throw new Error('LENGTH IS NOT 8 DIGITS');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    Number(req.body.value.origin.toString());
+    if (isNaN(Number(req.body.value.origin.toString()))) throw new Error('NOT NUMBER INPUT');
     validate = true;
   } catch (err) {
     validate = false;
