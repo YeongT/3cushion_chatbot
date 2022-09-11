@@ -51,15 +51,15 @@ router.post('/', async (req: Request, res: Response) => {
   const _user: UserObject | null = await UserModel.findOne({
     'auth.studentID': Number(userAction.params.studentID),
   });
-  if (_user === null) return loginRespond(res, 410, null);
-  if (_user.auth.passCode.toString() !== userAction.params.passCode) return loginRespond(res, 409, null);
+  if (_user === null) return loginRespond(res, 409, null);
+  if (_user.auth.passCode.toString() !== userAction.params.passCode) return loginRespond(res, 410, null);
 
   await UserModel.updateMany({ 'auth.kakaoTalk': userRequest.user.id }, { 'auth.kakaoTalk': undefined });
   const _result = await UserModel.updateOne(
     { 'auth.studentID': userAction.params.studentID, 'auth.passCode': userAction.params.passCode },
     { 'auth.kakaoTalk': userRequest.user.id },
   );
-  if (!_result) return loginRespond(res, 501, null);
+  if (!_result) return loginRespond(res, 500, null);
   return loginRespond(res, 200, _user);
 });
 export default router;

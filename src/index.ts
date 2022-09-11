@@ -3,8 +3,12 @@ import { DBError } from '../server/app';
 import loginAPI from './auth/login';
 import registerAPI from './auth/register';
 import clubRoomAPI from './info/clubroom';
+import memberInfoAPI from './member/info';
+
 import validStudentIDAPI from './validator/studentID';
 import validPassCodeAPI from './validator/passCode';
+import validPhoneNumAPI from './validator/phone';
+import validAgeAPI from './validator/age';
 
 const router = Router();
 
@@ -43,6 +47,10 @@ router.get('/status', (req: Request, res: Response) => {
 router.use('/auth/login', loginAPI);
 router.use('/auth/register', registerAPI);
 router.use('/info/clubroom', clubRoomAPI);
+router.use('/member/info', memberInfoAPI);
+
 router.use('/validator/passcode', validPassCodeAPI);
 router.use('/validator/studentId', validStudentIDAPI);
+router.use('/validator/phonenum', validPhoneNumAPI);
+router.use('/validator/age', validAgeAPI);
 export default router;
