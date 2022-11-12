@@ -13,9 +13,9 @@ if (process.env.HTTPS === 'true') {
   if (!process.env.HTTPS_CERT) throw new Error('[HTTPS] NO CERT FILE PATH FOR HTTPS EXPRESS SERVER');
 
   const credentials: https.ServerOptions = {
-    key: fs.readFileSync(__dirname + process.env.HTTPS_PRIVKEY),
-    cert: fs.readFileSync(__dirname + process.env.HTTPS_CERT),
-    ca: fs.readFileSync(__dirname + process.env.HTTPS_CHAIN),
+    key: fs.readFileSync((process.env.DO_NOT_ADD_DIRNAME ? '' : __dirname) + process.env.HTTPS_PRIVKEY),
+    cert: fs.readFileSync((process.env.DO_NOT_ADD_DIRNAME ? '' : __dirname) + process.env.HTTPS_CERT),
+    ca: fs.readFileSync((process.env.DO_NOT_ADD_DIRNAME ? '' : __dirname) + process.env.HTTPS_CHAIN),
   };
   server = https.createServer(credentials, app);
 } else server = http.createServer(app);

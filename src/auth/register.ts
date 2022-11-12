@@ -10,6 +10,7 @@ router.post('/', async (req: Request, res: Response) => {
 
   //# AUTHORIZATION
   const authKey = process.env.LOGIN_BASIC_AUTH_KEY;
+
   if (authKey === undefined) return res.status(403).end('NOT AUTHORIZED');
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   if (req.headers.authorization !== `Basic ${authKey}`) return res.status(403).end('NOT AUTHORIZED');
